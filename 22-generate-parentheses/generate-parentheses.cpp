@@ -3,40 +3,30 @@ public:
 
     vector <string> result;
 
-    bool isValid(string s){
-        
-        int count = 0;
-        for(char &ch: s){
-            if(ch == '(')
-            count++;
-            else
-            count--;
-            if(count<0)
-            return false;
-        }
-        return count==0; 
-    }
-
-    void backTrack( string &curr , int n ){
+    void backTrack( string &curr , int n ,int open,int close ){
         if(curr.length() == 2*n){
-            if(isValid(curr)){
-                result.push_back(curr);
-            }
-            return ;
+            result.push_back(curr);
+            return;
         }
-        curr.push_back('(');
-        backTrack(curr,n);
-        curr.pop_back();
+        if(open < n){
+            curr.push_back('(');
+            backTrack(curr,n,open+1,close);
+            curr.pop_back();
+        }
 
-        curr.push_back(')');
-        backTrack(curr ,n );
-        curr.pop_back();
+        if(open > close){
+            curr.push_back(')');
+            backTrack(curr ,n , open,close+1);
+            curr.pop_back();
+        }
     }
 
     vector<string> generateParenthesis(int n) {
         string curr = "";
 
-        backTrack(curr,n);
+        int open=0,close=0;
+
+        backTrack(curr,n,open,close);
 
         return result;
     }
