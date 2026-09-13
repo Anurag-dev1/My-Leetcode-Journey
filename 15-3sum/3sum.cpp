@@ -1,38 +1,44 @@
 class Solution {
 public:
+    vector<vector<int>> res ;
+    void twoSum(vector<int> &nums , int target, int i ,int j){
+        while(i<j){
+            int sum = nums[i] + nums[j];
+            if(sum < target){
+                i++;
+            }else if(sum > target){
+                j--;
+            }else{
+                while(i < j && nums[i] == nums[i+1])
+                i++;
+                while(i < j && nums[j] == nums[j-1])
+                j--;
+
+                res.push_back({-target , nums[i] , nums[j]});
+
+                i++;
+                j--;
+            }
+        }
+    }
+
     vector<vector<int>> threeSum(vector<int>& nums) {
-        vector<vector<int>> res;
+        int n = nums.size();
 
-        if (nums.size() < 3)
-            return res;
+        if(n < 3)
+        return {};
 
-        sort(nums.begin(), nums.end());
+        res.clear();
 
-        for (int i = 0; i < nums.size() - 2; i++) {
-            if (i > 0 && nums[i] == nums[i - 1])
-                continue;
-            if (nums[i] > 0)
-                break;
+        sort(nums.begin() , nums.end());
 
-            int left = i + 1, right = nums.size() - 1;
+        for(int i = 0 ; i < n-2; i++){
+            if(i > 0 && nums[i] == nums[i-1])
+            continue;
+
             int target = -nums[i];
 
-            while (left < right) {
-                int sum = nums[left] + nums[right];
-                if (sum == target) {
-                    res.push_back({nums[i], nums[left], nums[right]});
-                    left++;
-                    right--;
-                    while (left < right && nums[left] == nums[left - 1])
-                        left++;
-
-                    while (left < right && nums[right] == nums[right + 1])
-                        right--;
-                } else if (sum > target)
-                    right--;
-                else
-                    left++;
-            }
+            twoSum(nums,target , i+1,n-1);
         }
         return res;
     }
