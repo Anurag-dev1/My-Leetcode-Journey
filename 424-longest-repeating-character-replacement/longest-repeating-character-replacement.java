@@ -3,7 +3,7 @@ class Solution {
     public int characterReplacement(String s, int k) {
         int n = s.length();
 
-        Map<Character, Integer> mp = new HashMap<>();
+        Map<Integer, Integer> mp = new HashMap<>();
 
         int right = 0;
         int left = 0;
@@ -14,15 +14,15 @@ class Solution {
 
             char ch = s.charAt(right);
 
-            mp.put(ch, mp.getOrDefault(ch, 0) + 1);
+            mp.put(ch - 'A', mp.getOrDefault(ch - 'A', 0) + 1);
 
-            maxFreq = Math.max(maxFreq, mp.get(ch));
+            maxFreq = Math.max(maxFreq, mp.get(ch - 'A'));
 
             while((right - left + 1) - maxFreq > k) {
 
                 char lefty = s.charAt(left);
 
-                mp.put(lefty, mp.get(lefty) - 1);
+                mp.put(lefty - 'A', mp.get(lefty - 'A') - 1);
 
                 left++;
             }
