@@ -3,38 +3,17 @@ public:
     int n;
     int m;
 
-    void bfs(int row, int col, vector<vector<int>>& vis,
-             vector<vector<char>>& grid) {
-
-        vis[row][col] = 1;
-        queue<pair<int,int>> Q;
-        Q.push({row, col});
-
-        while(!Q.empty()) {
-
-            int row = Q.front().first;
-            int col = Q.front().second;
-
-            Q.pop();
-
-            int delrow[] = {-1, 1, 0, 0};
-            int delcol[] = {0, 0, -1, 1};
-
-            for(int k = 0; k < 4; k++) {
-
-                int nrow = row + delrow[k];
-                int ncol = col + delcol[k];
-
-                if(nrow >= 0 && ncol >= 0 &&
-                   nrow < n && ncol < m &&
-                   grid[nrow][ncol] == '1' &&
-                   !vis[nrow][ncol]) {
-
-                    vis[nrow][ncol] = 1;
-                    Q.push({nrow, ncol});
-                }
-            }
+    void dfs(int i , int j , vector<vector<int>> &vis , vector<vector<char>> &grid){
+        if(i >= n || i < 0 || j >= m || j < 0 || vis[i][j] || grid[i][j] != '1'){
+            return ;
         }
+
+        vis[i][j] = true;
+
+        dfs(i+1 , j , vis , grid);
+        dfs(i-1 , j , vis , grid);
+        dfs(i , j+1 , vis , grid);
+        dfs(i , j-1 , vis , grid);
     }
 
     int numIslands(vector<vector<char>>& grid) {
@@ -50,8 +29,8 @@ public:
             for(int col = 0; col < m; col++) {
 
                 if(!vis[row][col] && grid[row][col] == '1') {
+                    dfs(row, col, vis, grid);
                     count++;
-                    bfs(row, col, vis, grid);
                 }
             }
         }
