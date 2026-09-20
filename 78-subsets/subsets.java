@@ -5,8 +5,8 @@ class Solution {
             res.add(new ArrayList<>(temp));
             return;
         }
-
-        temp.add(nums[i]);
+        int curr = nums[i];
+        temp.add(curr);
         Solve(nums , n , i+1 , temp);
         temp.remove(temp.size() - 1);
         Solve(nums , n , i+1 , temp);
